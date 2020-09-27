@@ -5,18 +5,11 @@ jobs:
 - job: jmeter
   pool:
     vmImage: ubuntu-latest
-  displayName: Run JMeter tests
+  displayName: Publish JMeter artifacts
   steps:
-  - task: Bash@3
-    displayName: Execute JMeter tests
+ 
+  - task: PublishBuildArtifacts@1
     inputs:
-      targetType: filePath
-      filePath: 'jmeter/test.sh'
-      arguments: '$PWD LoadTest.jmx $(hostname)'
-      workingDirectory: jmeter
-      failOnStderr: false
-  - task: PublishPipelineArtifact@1
-    displayName: Publish JMeter Report
-    inputs:
-      targetPath: jmeter/report
-      artifact: jmeter
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
